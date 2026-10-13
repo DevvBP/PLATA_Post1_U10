@@ -162,5 +162,25 @@ Plata_Post1_U10/
                 ├── repository/
                 │   └── ProductoRepositoryTest.java
                 └── service/
-                    └── ProductoServiceTest.java
 ```
+
+---
+
+## 7. Evidencias de Ejecución y Capturas
+
+El detalle paso a paso de todas las pruebas ejecutadas, logs de consola, reportes de cobertura JaCoCo al 100% y capturas de pantalla de Postman se encuentra documentado en:
+
+📄 **[Ver Documento Completo de Evidencias](capturas/EVIDENCIAS_EJECUCION.md)**
+
+### Resumen de Evidencias Incluidas:
+1. **Compilación y Tests:** `mvn clean verify` con 23 tests pasando y 0 fallos.
+2. **Cobertura JaCoCo:** 100% de cobertura en líneas y ramas (superando el 70% requerido).
+3. **Arranque:** Servidor Spring Boot en puerto 8080 con base H2 en memoria.
+4. **POST `/api/productos`:** Creación exitosa (HTTP 201 Created).
+5. **GET `/api/productos/{id}`:** Consulta por identificador (HTTP 200 OK).
+6. **GET `/api/productos?categoria=`:** Filtrado de productos por categoría (HTTP 200 OK).
+7. **GET `/api/productos/99999`:** Manejo de entidad no encontrada (HTTP 404 Not Found).
+8. **POST con precio negativo:** Manejo de validación de negocio (HTTP 400 Bad Request).
+9. **Newman CLI:** Ejecución automatizada con 10/10 assertions exitosas.
+10. **Git Log:** Historial de commits semánticos y estructurados.
+

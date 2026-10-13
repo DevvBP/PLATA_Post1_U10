@@ -65,6 +65,9 @@ catalogo-productos,com.universidad.catalogo.controller,ProductoController,0,86,0
 > **Umbral configurado en pom.xml:** `COVEREDRATIO >= 0.70` (70%)
 > **Resultado obtenido:** `All coverage checks have been met.` ✅
 
+### 📷 Captura Visual:
+![Reporte JaCoCo HTML](ReporteJacocoHTML1.png)
+
 ---
 
 ## ✅ CAPTURA 3 — Servidor Spring Boot en ejecución (`mvn spring-boot:run`)
@@ -121,6 +124,9 @@ Content-Type: application/json
 }
 ```
 
+### 📷 Captura Visual:
+![POST Crear Producto](PostCrearProducto.png)
+
 ---
 
 ## ✅ CAPTURA 5 — GET /api/productos/{id} → 200 OK
@@ -139,6 +145,9 @@ GET http://localhost:8080/api/productos/1
   "categoria": "Perifericos"
 }
 ```
+
+### 📷 Captura Visual:
+![GET Obtener por ID](GetObtenerporID.png)
 
 ---
 
@@ -167,6 +176,9 @@ GET http://localhost:8080/api/productos?categoria=Perifericos
 ]
 ```
 
+### 📷 Captura Visual:
+![GET Listar por Categoria](GetListarPorCategoria.png)
+
 ---
 
 ## ✅ CAPTURA 7 — GET /api/productos/99999 → 404 Not Found
@@ -186,6 +198,9 @@ GET http://localhost:8080/api/productos/99999
 ```
 
 > El `@ExceptionHandler(EntityNotFoundException.class)` en `ProductoController` intercepta la excepción del servicio y la transforma en un **HTTP 404** con cuerpo JSON estructurado.
+
+### 📷 Captura Visual:
+![GET ID Inexistente 404](Get%20ID%20inexistente.png)
 
 ---
 
@@ -213,6 +228,9 @@ Content-Type: application/json
 ```
 
 > El `@ExceptionHandler(IllegalArgumentException.class)` en `ProductoController` intercepta la validación del servicio y retorna un **HTTP 400** con el mensaje de error del dominio.
+
+### 📷 Captura Visual:
+![POST Precio Invalido 400](PostPrecioInvalido%20400%20Error.png)
 
 ---
 
