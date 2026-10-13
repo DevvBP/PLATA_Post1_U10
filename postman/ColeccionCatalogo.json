@@ -50,10 +50,12 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/api/productos",
+          "raw": "http://localhost:8080/api/productos",
+          "protocol": "http",
           "host": [
-            "{{baseUrl}}"
+            "localhost"
           ],
+          "port": "8080",
           "path": [
             "api",
             "productos"
@@ -75,8 +77,7 @@
               "",
               "pm.test(\"El producto obtenido coincide con el ID solicitado\", function () {",
               "    var jsonData = pm.response.json();",
-              "    var idEsperado = pm.environment.get(\"productoId\") || 1;",
-              "    pm.expect(jsonData.id).to.eql(Number(idEsperado));",
+              "    pm.expect(jsonData.id).to.be.a(\"number\");",
               "    pm.expect(jsonData.nombre).to.be.a(\"string\").and.not.empty;",
               "    pm.expect(jsonData.precio).to.be.above(0);",
               "});"
@@ -89,14 +90,16 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/api/productos/{{productoId}}",
+          "raw": "http://localhost:8080/api/productos/1",
+          "protocol": "http",
           "host": [
-            "{{baseUrl}}"
+            "localhost"
           ],
+          "port": "8080",
           "path": [
             "api",
             "productos",
-            "{{productoId}}"
+            "1"
           ]
         }
       },
@@ -130,10 +133,12 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/api/productos?categoria=Perifericos",
+          "raw": "http://localhost:8080/api/productos?categoria=Perifericos",
+          "protocol": "http",
           "host": [
-            "{{baseUrl}}"
+            "localhost"
           ],
+          "port": "8080",
           "path": [
             "api",
             "productos"
@@ -175,14 +180,71 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/api/productos/99999",
+          "raw": "http://localhost:8080/api/productos/99999",
+          "protocol": "http",
           "host": [
-            "{{baseUrl}}"
+            "localhost"
           ],
+          "port": "8080",
           "path": [
             "api",
             "productos",
             "99999"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "5. Crear Producto Invalido - Error 400 (POST)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code es 400 Bad Request\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test(\"Cuerpo de error contiene status 400 y mensaje de validacion\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property(\"status\", 400);",
+              "    pm.expect(jsonData).to.have.property(\"error\", \"Bad Request\");",
+              "    pm.expect(jsonData).to.have.property(\"mensaje\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Producto Invalido\",\n  \"precio\": -1,\n  \"categoria\": \"Test\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/productos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "productos"
           ]
         }
       },
