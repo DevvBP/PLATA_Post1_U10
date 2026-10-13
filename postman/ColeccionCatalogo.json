@@ -1,0 +1,192 @@
+{
+  "info": {
+    "_postman_id": "a91b32f1-6a2c-4712-9c10-8b1e42a03cf8",
+    "name": "Catalogo de Productos API",
+    "description": "Coleccion Postman v2.1 para pruebas automatizadas de la API REST del laboratorio Unidad 10 de Programacion Web.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Crear Producto (POST)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code es 201 Created\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Respuesta contiene id generado y propiedades correctas\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property(\"id\");",
+              "    pm.expect(jsonData.id).to.be.a(\"number\");",
+              "    pm.expect(jsonData.nombre).to.eql(\"Teclado Mecanico RGB\");",
+              "    pm.expect(jsonData.precio).to.eql(89.99);",
+              "    pm.expect(jsonData.categoria).to.eql(\"Perifericos\");",
+              "    pm.environment.set(\"productoId\", jsonData.id);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Teclado Mecanico RGB\",\n  \"precio\": 89.99,\n  \"categoria\": \"Perifericos\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/productos",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "productos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2. Obtener Producto por ID (GET)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code es 200 OK\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"El producto obtenido coincide con el ID solicitado\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    var idEsperado = pm.environment.get(\"productoId\") || 1;",
+              "    pm.expect(jsonData.id).to.eql(Number(idEsperado));",
+              "    pm.expect(jsonData.nombre).to.be.a(\"string\").and.not.empty;",
+              "    pm.expect(jsonData.precio).to.be.above(0);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/productos/{{productoId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "productos",
+            "{{productoId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. Listar Productos por Categoria (GET)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code es 200 OK\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Respuesta es un array con elementos de la categoria consultada\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.be.an(\"array\");",
+              "    pm.expect(jsonData.length).to.be.above(0);",
+              "    jsonData.forEach(function (producto) {",
+              "        pm.expect(producto.categoria).to.eql(\"Perifericos\");",
+              "    });",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/productos?categoria=Perifericos",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "productos"
+          ],
+          "query": [
+            {
+              "key": "categoria",
+              "value": "Perifericos"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. Obtener Producto Inexistente - Error 404 (GET)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code es 404 Not Found\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});",
+              "",
+              "pm.test(\"Cuerpo de error contiene status 404 y mensaje explicativo\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property(\"status\", 404);",
+              "    pm.expect(jsonData).to.have.property(\"error\", \"Not Found\");",
+              "    pm.expect(jsonData).to.have.property(\"mensaje\");",
+              "    pm.expect(jsonData.mensaje).to.include(\"99999\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/productos/99999",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "productos",
+            "99999"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
